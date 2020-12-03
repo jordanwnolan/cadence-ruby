@@ -33,12 +33,16 @@ module Cadence
         metadata = Metadata.generate(Metadata::DECISION_TYPE, task, domain)
 
         p '~~~~~BEFORE MIDDLEWARE~~~~~~'
-        p Thread.current.thread_local_variables
-        p Thread.current[:scrolls_context]
+        p Thread.current.thread_variables
+        Thread.current.thread_variables.each do |var|
+          p "#{var} #{Thread.current.thread_variable_get(var)}"
+        end
         decisions = middleware_chain.invoke(metadata) do
           p '~~~~~IN MIDDLEWARE~~~~~~'
-          p Thread.current.thread_local_variables
-          p Thread.current[:scrolls_context]
+          p Thread.current.thread_variables
+          Thread.current.thread_variables.each do |var|
+            p "#{var} #{Thread.current.thread_variable_get(var)}"
+          end
           executor.run
         end
 
