@@ -32,7 +32,13 @@ module Cadence
         executor = Workflow::Executor.new(workflow_class, history)
         metadata = Metadata.generate(Metadata::DECISION_TYPE, task, domain)
 
+        p '~~~~~BEFORE MIDDLEWARE~~~~~~'
+        p Thread.current.thread_local_variables
+        p Thread.current[:scrolls_context]
         decisions = middleware_chain.invoke(metadata) do
+          p '~~~~~IN MIDDLEWARE~~~~~~'
+          p Thread.current.thread_local_variables
+          p Thread.current[:scrolls_context]
           executor.run
         end
 

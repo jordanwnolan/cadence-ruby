@@ -7,9 +7,11 @@ module Cadence
     extend Concerns::Executable
     extend ConvenienceMethods
 
-    def self.execute_in_context(context, input)
+    def self.execute_in_context(context, input, thread_variables = {})
       Cadence::ThreadLocalContext.set(context)
-
+      thread_variables.each do |k, v|
+        Thread.current[k] = v
+      end
       workflow = new(context)
       result = workflow.execute(*input)
 

@@ -11,6 +11,9 @@ module Cadence
 
         Result.new(Result::COMPLETED)
       rescue StandardError => error # TODO: is there a need for a specialized error here?
+        p '~~~~~~~SAGA~~~~~~~~~'
+        p Thread.current.thread_local_variables
+        p Thread.current[:scrolls_context]
         logger.error("Saga execution aborted: #{error.inspect}")
         logger.debug(error.backtrace.join("\n"))
 
