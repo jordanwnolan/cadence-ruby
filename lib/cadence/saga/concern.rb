@@ -14,6 +14,8 @@ module Cadence
         logger.error("Saga execution aborted: #{error.inspect}")
         logger.debug(error.backtrace.join("\n"))
 
+        binding.pry
+
         if compensate?(error, **configuration)
           logger.error('Saga compensating')
           saga.compensate
