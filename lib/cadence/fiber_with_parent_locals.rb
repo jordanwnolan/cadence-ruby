@@ -14,7 +14,7 @@ module Cadence
       end
 
       super do
-        thread_locals.each { |(key, value)| Thread.current[key] = value.clone }
+        # thread_locals.each { |(key, value)| Thread.current[key] = value.clone }
         yield
       end
     end
