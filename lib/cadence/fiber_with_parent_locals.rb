@@ -7,7 +7,12 @@ require 'fiber'
 module Cadence
   class FiberWithParentLocals < Fiber
     def self.new
-      thread_locals = Thread.current.keys.map { |key| [key, Thread.current[key]] }
+      thread_locals = Thread.current.keys.map do |key|
+        next if key == Cadence::ThreadLocalContext::WORKFLOW_CONTEXT_KEY
+
+        [key, Thread.current[key]]
+      end
+
       super do
         thread_locals.each { |(key, value)| Thread.current[key] = value.clone }
         yield
